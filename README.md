@@ -1,0 +1,1 @@
+# L-IT Symfony Backend Test Assignment
