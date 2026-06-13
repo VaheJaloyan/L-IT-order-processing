@@ -26,7 +26,11 @@ services:
             $handlers: !tagged_iterator app.order_notification_handler
             
     App\Service\Notification\EmailNotificationHandler:
+        arguments:
+            $logger: '@monolog.logger.notification'
         tags: [ 'app.order_notification_handler' ]
 
     App\Service\Notification\PushNotificationHandler:
+        arguments:
+            $logger: '@monolog.logger.notification'
         tags: [ 'app.order_notification_handler' ]

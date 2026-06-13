@@ -3,9 +3,10 @@
 namespace App\Service\Notification;
 
 use App\Entity\Order;
+use App\Service\Notification\Contract\OrderNotificationHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class PushNotificationHandler
+class PushNotificationHandler implements OrderNotificationHandlerInterface
 {
     public function __construct(
         private readonly LoggerInterface $logger
