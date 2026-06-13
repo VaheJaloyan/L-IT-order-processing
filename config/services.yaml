@@ -32,3 +32,8 @@ services:
     App\Service\Notification\PushNotificationHandler:
         arguments:
             $logger: '@monolog.logger.notification'
+
+    serializer.encoder.json:
+        class: App\Serializer\PreserveFloatJsonEncoder
+        tags:
+            - { name: serializer.encoder }

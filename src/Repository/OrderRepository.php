@@ -18,12 +18,12 @@ class OrderRepository extends ServiceEntityRepository
 
     public function findWithDetails(int $id)
     {
-        return $this->createQueryBuilder('order')
-            ->leftJoin('order.customer', 'customer')
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.customer', 'customer')
             ->addSelect('customer')
-            ->leftJoin('order.items', 'items')
-            ->addSelect('items')
-            ->where('order.id = :id')
+            ->leftJoin('o.orderItems', 'orderItems')
+            ->addSelect('orderItems')
+            ->where('o.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
