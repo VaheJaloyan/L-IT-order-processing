@@ -32,7 +32,7 @@ class OrderService
             $this->entityManager->persist($order);
 
             foreach ($data->items as $item) {
-                $order->addOrderItem($this->createOrderItem($order, $item));
+                $order->addOrderItem($this->createOrderItem($item));
             }
             $this->entityManager->flush();
 
@@ -44,18 +44,16 @@ class OrderService
         return $order;
     }
 
-    private function createOrderItem(Order $order, OrderItemDataDto $itemData): OrderItem
+    private function createOrderItem(OrderItemDataDto $itemData): OrderItem
     {
         // convert float price to cents — do it once here, never elsewhere
         $unitPriceInCents = (int) round($itemData->price * 100);
-        $subtotal = $unitPriceInCents * $itemData->quantity;
 
         $item = new OrderItem();
-        $item->setOrder($order);
         $item->setProductCode($itemData->productCode);
         $item->setQuantity($itemData->quantity);
         $item->setUnitPrice($unitPriceInCents);
-        $item->setSubtotal($subtotal);
+        $item->setSubtotal($unitPriceInCents * $itemData->quantity);
 
         return $item;
     }
