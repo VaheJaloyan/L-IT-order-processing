@@ -48,6 +48,9 @@ class User
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'customer_id')]
     private Collection $orders;
 
+    /**
+     * Initializes the orders collection and sets timestamps to the current time.
+     */
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -55,11 +58,13 @@ class User
         $this->updated_at = new \DateTimeImmutable();
     }
 
+    /** @return ?int */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /** @param string $id */
     public function setId(string $id): static
     {
         $this->id = $id;
@@ -67,11 +72,13 @@ class User
         return $this;
     }
 
+    /** @return ?string */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /** @param string $name */
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -79,11 +86,13 @@ class User
         return $this;
     }
 
+    /** @return ?string Unique email address used to identify the user */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /** @param string $email Must be unique across all users */
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -91,11 +100,13 @@ class User
         return $this;
     }
 
+    /** @return ?\DateTimeImmutable */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
     }
 
+    /** @param \DateTimeImmutable $created_at */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
@@ -103,11 +114,13 @@ class User
         return $this;
     }
 
+    /** @return ?\DateTimeImmutable */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
     }
 
+    /** @param \DateTimeImmutable $updated_at */
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
@@ -115,11 +128,13 @@ class User
         return $this;
     }
 
+    /** @return ?string Hashed password; null if password auth is not configured */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /** @param ?string $password Pass null to remove password auth */
     public function setPassword(?string $password): static
     {
         $this->password = $password;
@@ -127,11 +142,13 @@ class User
         return $this;
     }
 
+    /** @return ?string */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /** @param ?string $phone */
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
@@ -139,11 +156,13 @@ class User
         return $this;
     }
 
+    /** @return ?string BCP 47 locale tag (e.g. "en", "fr-FR") */
     public function getLocale(): ?string
     {
         return $this->locale;
     }
 
+    /** @param ?string $locale BCP 47 locale tag */
     public function setLocale(?string $locale): static
     {
         $this->locale = $locale;
@@ -151,11 +170,13 @@ class User
         return $this;
     }
 
+    /** @return ?array Arbitrary JSON metadata stored against the user */
     public function getMetadata(): ?array
     {
         return $this->metadata;
     }
 
+    /** @param ?array $metadata */
     public function setMetadata(?array $metadata): static
     {
         $this->metadata = $metadata;
@@ -163,11 +184,13 @@ class User
         return $this;
     }
 
+    /** @return ?bool False means the account is disabled */
     public function isActive(): ?bool
     {
         return $this->isActive;
     }
 
+    /** @param bool $isActive Set to false to disable the account */
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
@@ -183,6 +206,12 @@ class User
         return $this->orders;
     }
 
+    /**
+     * Associates an order with this user and sets the owning side of the relation.
+     * Has no effect if the order is already linked to this user.
+     *
+     * @param Order $order
+     */
     public function addOrder(Order $order): static
     {
         if (!$this->orders->contains($order)) {
@@ -193,10 +222,14 @@ class User
         return $this;
     }
 
+    /**
+     * Removes an order from this user and nullifies the customer reference on the order.
+     *
+     * @param Order $order
+     */
     public function removeOrder(Order $order): static
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getCustomer() === $this) {
                 $order->setCustomer(null);
             }
@@ -205,6 +238,10 @@ class User
         return $this;
     }
 
+    /**
+     * Doctrine PreUpdate lifecycle callback.
+     * Refreshes `updated_at`.
+     */
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
