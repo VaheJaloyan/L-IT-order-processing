@@ -31,14 +31,9 @@ class OrderService
             $order->setStatus(OrderStatusEnum::created);
             $this->entityManager->persist($order);
 
-            $total = 0;
             foreach ($data->items as $item) {
-                $orderItem = $this->createOrderItem($order, $item);
-                $total += $orderItem->getSubtotal();
-                $this->entityManager->persist($orderItem);
+                $order->addOrderItem($this->createOrderItem($order, $item));
             }
-
-            $order->setTotalAmount($total);
             $this->entityManager->flush();
 
             return $order;
