@@ -16,8 +16,8 @@ final class OrdersController extends AbstractController
         return $this->json([
             'message' => 'Order created successfully',
             'data' => [
-	            'product' => $dto->productName,
-	            'quantity' => $dto->quantity
+	            'customer' => $dto->customer,
+	            'items' => $dto->items
             ]
         ]);
     }
