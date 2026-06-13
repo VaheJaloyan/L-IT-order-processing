@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\Order;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,7 +16,6 @@ class OrderItemDataDto
         #[Assert\NotNull]
         #[Assert\PositiveOrZero(message: 'Price cannot be negative')]
         public readonly float $price,
-
     ) {
     }
 }

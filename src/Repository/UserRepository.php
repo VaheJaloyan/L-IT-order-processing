@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Dto\CustomerDataDto;
+use App\Dto\Order\CustomerDataDto;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,13 +24,13 @@ class UserRepository extends ServiceEntityRepository
 
     public function findOrCreate(CustomerDataDto $data): User
     {
-       $user = $this->findByEmail($data->email);
-       if ($user === null) {
-           $user = new User();
-           $user->setName($data->name);
-           $user->setEmail($data->email);
-       }
+        $user = $this->findByEmail($data->email);
+        if ($user === null) {
+            $user = new User();
+            $user->setName($data->name);
+            $user->setEmail($data->email);
+        }
 
-       return $user;
+        return $user;
     }
 }

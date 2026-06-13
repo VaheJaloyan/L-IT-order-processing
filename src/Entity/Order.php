@@ -49,6 +49,8 @@ class Order
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -174,5 +176,11 @@ class Order
         }
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updated_at = new \DateTimeImmutable();
     }
 }

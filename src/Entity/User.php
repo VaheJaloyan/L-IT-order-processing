@@ -51,6 +51,8 @@ class User
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -202,4 +204,11 @@ class User
 
         return $this;
     }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updated_at = new \DateTimeImmutable();
+    }
+
 }

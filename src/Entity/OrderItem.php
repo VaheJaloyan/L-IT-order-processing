@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OrderItemsRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderItemsRepository::class)]
@@ -39,6 +38,12 @@ class OrderItem
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $order = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -146,5 +151,11 @@ class OrderItem
         $this->order = $order;
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updated_at = new \DateTimeImmutable();
     }
 }
