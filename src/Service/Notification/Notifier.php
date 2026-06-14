@@ -18,7 +18,8 @@ class Notifier
     ) {}
 
     /**
-     * Iterates all handlers and invokes those that support the event.
+     * Passes the event to every handler that declares support for it.
+     * Handlers that return false from supports() are silently skipped.
      *
      * @param NotificationEvent $event
      */

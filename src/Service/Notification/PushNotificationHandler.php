@@ -21,7 +21,6 @@ class PushNotificationHandler implements NotificationHandlerInterface
 
     public function handle(NotificationEvent $event): void
     {
-        // mocked — just log it
         $this->logger->info('Push notification sent'.time(), $event->payload);
     }
 }

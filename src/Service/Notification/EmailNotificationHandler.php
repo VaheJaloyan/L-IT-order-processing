@@ -21,7 +21,6 @@ class EmailNotificationHandler implements NotificationHandlerInterface
 
     public function handle(NotificationEvent $event): void
     {
-        // mocked — just log it
         $this->logger->info('Email notification sent', $event->payload);
     }
 }
