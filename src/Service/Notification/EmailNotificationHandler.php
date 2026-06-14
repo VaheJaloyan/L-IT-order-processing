@@ -2,24 +2,26 @@
 
 namespace App\Service\Notification;
 
-use App\Entity\Order;
-use App\Service\Notification\Contract\OrderNotificationHandlerInterface;
+use App\Notification\NotificationEvent;
+use App\Notification\NotificationEventType;
+use App\Service\Notification\Contract\NotificationHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class EmailNotificationHandler implements OrderNotificationHandlerInterface
+class EmailNotificationHandler implements NotificationHandlerInterface
 {
-
     public function __construct(
         private readonly LoggerInterface $logger
     ) {
     }
 
-    public function handle(Order $order): void
+    public function supports(NotificationEvent $event): bool
+    {
+        return in_array($event->type, [NotificationEventType::OrderCreated], true);
+    }
+
+    public function handle(NotificationEvent $event): void
     {
         // mocked — just log it
-        $this->logger->info('Email notification sent', [
-            'order_id' => $order->getId(),
-            'customer' => $order->getCustomer()->getEmail(),
-        ]);
+        $this->logger->info('Email notification sent', $event->payload);
     }
 }

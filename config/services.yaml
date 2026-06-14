@@ -21,9 +21,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Service\Notification\OrderNotifier:
+    App\Service\Notification\Notifier:
         arguments:
-            $handlers: !tagged_iterator app.order_notification_handler
+            $handlers: !tagged_iterator app.notification_handler
             
     App\Service\Notification\EmailNotificationHandler:
         arguments:
