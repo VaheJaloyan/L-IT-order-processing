@@ -17,11 +17,26 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Finds a user by email address.
+     *
+     * @param string $email
+     *
+     * @return User|null Null if no user with the given email exists
+     */
     public function findByEmail(string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
     }
 
+    /**
+     * Returns the existing user with the given email, or builds a new (unpersisted) User from the DTO.
+     * The caller is responsible for persisting.
+     *
+     * @param CustomerDataDto $data
+     *
+     * @return User Existing or new User
+     */
     public function findOrCreate(CustomerDataDto $data): User
     {
         $user = $this->findByEmail($data->email);

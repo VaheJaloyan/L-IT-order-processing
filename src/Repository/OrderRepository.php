@@ -16,7 +16,14 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function findWithDetails(int $id)
+    /**
+     * Finds an order by ID and loads its customer and order items.
+     *
+     * @param int $id
+     *
+     * @return Order|null Null if no order with the given ID exists
+     */
+    public function findWithDetails(int $id): ?Order
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.customer', 'customer')
