@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
+#[ORM\HasLifecycleCallbacks]
 class User
 {
     #[ORM\Id]
@@ -37,10 +38,10 @@ class User
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
     private bool $isActive = true;
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Order>
@@ -54,22 +55,14 @@ class User
     public function __construct()
     {
         $this->orders = new ArrayCollection();
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /** @return ?int */
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /** @param string $id */
-    public function setId(string $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /** @return ?string */
@@ -103,13 +96,13 @@ class User
     /** @return ?\DateTimeImmutable */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /** @param \DateTimeImmutable $created_at */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $created_at;
 
         return $this;
     }
@@ -117,13 +110,13 @@ class User
     /** @return ?\DateTimeImmutable */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /** @param \DateTimeImmutable $updated_at */
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updated_at;
 
         return $this;
     }
@@ -245,7 +238,7 @@ class User
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
 }

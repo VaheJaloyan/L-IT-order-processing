@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderItemsRepository::class)]
 #[ORM\Table(name: 'order_items')]
+#[ORM\HasLifecycleCallbacks]
 class OrderItem
 {
     #[ORM\Id]
@@ -15,25 +16,25 @@ class OrderItem
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $product_code = null;
+    private ?string $productCode = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
 
     #[ORM\Column]
-    private ?int $unit_price = null;
+    private ?int $unitPrice = null;
 
     #[ORM\Column]
     private ?int $subtotal = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column (nullable: true)]
-    private ?\DateTimeImmutable $deleted_at = null;
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
@@ -44,8 +45,8 @@ class OrderItem
      */
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /** @return ?int */
@@ -54,24 +55,16 @@ class OrderItem
         return $this->id;
     }
 
-    /** @param string $id */
-    public function setId(string $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     /** @return ?string SKU or product identifier (max 100 characters) */
     public function getProductCode(): ?string
     {
-        return $this->product_code;
+        return $this->productCode;
     }
 
-    /** @param string $product_code SKU or product identifier */
-    public function setProductCode(string $product_code): static
+    /** @param string $productCode SKU or product identifier */
+    public function setProductCode(string $productCode): static
     {
-        $this->product_code = $product_code;
+        $this->productCode = $productCode;
 
         return $this;
     }
@@ -93,13 +86,13 @@ class OrderItem
     /** @return ?int Unit price in the smallest currency unit */
     public function getUnitPrice(): ?int
     {
-        return $this->unit_price;
+        return $this->unitPrice;
     }
 
-    /** @param int $unit_price Unit price in the smallest currency unit */
-    public function setUnitPrice(int $unit_price): static
+    /** @param int $unitPrice Unit price in the smallest currency unit */
+    public function setUnitPrice(int $unitPrice): static
     {
-        $this->unit_price = $unit_price;
+        $this->unitPrice = $unitPrice;
 
         return $this;
     }
@@ -121,13 +114,13 @@ class OrderItem
     /** @return ?\DateTimeImmutable */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /** @param \DateTimeImmutable $created_at */
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $created_at;
 
         return $this;
     }
@@ -135,13 +128,13 @@ class OrderItem
     /** @return ?\DateTimeImmutable */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /** @param \DateTimeImmutable $updated_at */
     public function setUpdatedAt(\DateTimeImmutable $updated_at): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updated_at;
 
         return $this;
     }
@@ -149,13 +142,13 @@ class OrderItem
     /** @return ?\DateTimeImmutable Null if the item has not been soft-deleted */
     public function getDeletedAt(): ?\DateTimeImmutable
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
     /** @param \DateTimeImmutable $deleted_at */
     public function setDeletedAt(\DateTimeImmutable $deleted_at): static
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deleted_at;
 
         return $this;
     }
@@ -181,6 +174,6 @@ class OrderItem
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

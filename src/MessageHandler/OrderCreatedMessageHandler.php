@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
  * Handles the OrderCreatedMessage by sending notifications for the newly created order.
  */
 #[AsMessageHandler]
-class OrderCreatedMessageHandler
+final class OrderCreatedMessageHandler
 {
     public function __construct(
         private readonly OrderRepository $orderRepository,

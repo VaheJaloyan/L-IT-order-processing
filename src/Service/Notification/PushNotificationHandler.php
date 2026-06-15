@@ -7,7 +7,7 @@ use App\Notification\NotificationEventType;
 use App\Service\Notification\Contract\NotificationHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class PushNotificationHandler implements NotificationHandlerInterface
+final class PushNotificationHandler implements NotificationHandlerInterface
 {
     public function __construct(
         private readonly LoggerInterface $logger

@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: 'orders')]
+#[ORM\HasLifecycleCallbacks]
 class Order
 {
     #[ORM\Id]
@@ -19,7 +20,7 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $total_amount = null;
+    private ?int $totalAmount = null;
 
     #[ORM\Column(enumType: OrderStatusEnum::class)]
     private ?OrderStatusEnum $status = null;
@@ -28,13 +29,13 @@ class Order
     private ?string $notes = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deleted_at = null;
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
@@ -52,9 +53,9 @@ class Order
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
-        $this->total_amount = 0;
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->totalAmount = 0;
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /** @return ?int */
@@ -63,24 +64,16 @@ class Order
         return $this->id;
     }
 
-    /** @param string $id */
-    public function setId(string $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     /** @return ?int Total order amount in the smallest currency unit */
     public function getTotalAmount(): ?int
     {
-        return $this->total_amount;
+        return $this->totalAmount;
     }
 
-    /** @param int $total_amount Total amount in the smallest currency unit */
-    public function setTotalAmount(int $total_amount): static
+    /** @param int $totalAmount Total amount in the smallest currency unit */
+    public function setTotalAmount(int $totalAmount): static
     {
-        $this->total_amount = $total_amount;
+        $this->totalAmount = $totalAmount;
 
         return $this;
     }
@@ -116,13 +109,13 @@ class Order
     /** @return ?\DateTimeImmutable */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    /** @param \DateTimeImmutable $created_at */
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    /** @param \DateTimeImmutable $createdAt */
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -130,13 +123,13 @@ class Order
     /** @return ?\DateTimeImmutable */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    /** @param \DateTimeImmutable $updated_at */
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    /** @param \DateTimeImmutable $updatedAt */
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -144,13 +137,13 @@ class Order
     /** @return ?\DateTimeImmutable Null if the order has not been soft-deleted */
     public function getDeletedAt(): ?\DateTimeImmutable
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    /** @param ?\DateTimeImmutable $deleted_at Pass null to restore a soft-deleted order */
-    public function setDeletedAt(?\DateTimeImmutable $deleted_at): static
+    /** @param ?\DateTimeImmutable $deletedAt Pass null to restore a soft-deleted order */
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -188,7 +181,7 @@ class Order
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems->add($orderItem);
             $orderItem->setOrder($this);
-            $this->total_amount += $orderItem->getSubtotal();
+            $this->totalAmount += $orderItem->getSubtotal();
         }
 
         return $this;
@@ -213,6 +206,6 @@ class Order
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }
