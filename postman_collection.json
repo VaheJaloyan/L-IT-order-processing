@@ -26,13 +26,8 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/api/orders",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders"]
                         },
                         "body": {
                             "mode": "raw",
@@ -58,13 +53,8 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/api/orders",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders"]
                         },
                         "body": {
                             "mode": "raw",
@@ -85,14 +75,8 @@
                         "header": [],
                         "url": {
                             "raw": "{{base_url}}/api/orders/1",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders",
-                                "1"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders", "1"]
                         },
                         "description": "Fetches the pre-loaded fixture order (ID 1). Returns full details with customer and items."
                     }
@@ -104,14 +88,8 @@
                         "header": [],
                         "url": {
                             "raw": "{{base_url}}/api/orders/999999",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders",
-                                "999999"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders", "999999"]
                         },
                         "description": "Expects HTTP 404 with an error message."
                     }
@@ -128,13 +106,8 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/api/orders",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders"]
                         },
                         "body": {
                             "mode": "raw",
@@ -160,13 +133,8 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/api/orders",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders"]
                         },
                         "body": {
                             "mode": "raw",
@@ -192,13 +160,8 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/api/orders",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "orders"
-                            ]
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "orders"]
                         },
                         "body": {
                             "mode": "raw",

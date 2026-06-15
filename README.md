@@ -49,6 +49,7 @@ docker compose up -d
 ```
 
 This starts three containers:
+
 - `php` — FrankenPHP application server (HTTP on port 80, HTTPS on port 443)
 - `worker` — Symfony Messenger consumer for async notifications
 - `database` — PostgreSQL
@@ -111,10 +112,11 @@ curl -X POST http://localhost/api/orders \
 ```
 
 **Response `201 Created`:**
+
 ```json
 {
   "id": 2,
-  "total": 46.00,
+  "total": 46.0,
   "status": "created",
   "customer": {
     "id": 1,
@@ -122,13 +124,24 @@ curl -X POST http://localhost/api/orders \
     "email": "john@example.com"
   },
   "items": [
-    { "productCode": "BOOK-001", "quantity": 2, "unitPrice": 15.50, "subtotal": 31.00 },
-    { "productCode": "PEN-001",  "quantity": 3, "unitPrice": 5.00,  "subtotal": 15.00 }
+    {
+      "productCode": "BOOK-001",
+      "quantity": 2,
+      "unitPrice": 15.5,
+      "subtotal": 31.0
+    },
+    {
+      "productCode": "PEN-001",
+      "quantity": 3,
+      "unitPrice": 5.0,
+      "subtotal": 15.0
+    }
   ]
 }
 ```
 
 **Validation error `422 Unprocessable Entity`:**
+
 ```json
 {
   "errors": {
@@ -151,6 +164,7 @@ curl http://localhost/api/orders/1
 **Response `200 OK`:** same shape as the create response above.
 
 **Not found `404`:**
+
 ```json
 { "message": "Order not found" }
 ```
@@ -166,21 +180,27 @@ Import `postman_collection.json` from the project root into Postman for ready-to
 ## Design decisions
 
 ### Monetary values stored in cents
+
 Prices are stored as integers in the smallest currency unit (cents) to avoid floating-point rounding errors. The API accepts and returns decimal values (`15.50`); conversion happens once on input inside `OrderService`.
 
 ### Customer upsert
+
 If a customer with the given email already exists, the existing record is reused. No duplicate customers are created.
 
 ### Transactional order creation
+
 The entire order creation (customer, order, items) is wrapped in a single database transaction. If any step fails, nothing is persisted.
 
 ### Async notifications via Symfony Messenger
+
 After an order is created, an `OrderCreatedMessage` is dispatched to the `async` transport. A separate `worker` container consumes the queue and triggers all registered notification handlers. This decouples notifications from the HTTP request cycle.
 
 **Notification failures never affect order creation.** Because the message is dispatched asynchronously, a failing email server or push provider does not roll back the order or return an error to the caller.
 
 ### Extensible notification handlers
+
 Notification channel handlers (`EmailNotificationHandler`, `PushNotificationHandler`) implement `NotificationHandlerInterface` and declare which event types they support via `supports()`. Adding a new channel requires only a new class — no existing code is modified (Open/Closed Principle).
 
 ### Event types as a backed enum
+
 `NotificationEventType` is a backed enum (`string`). This eliminates magic strings and provides a central registry of all notification event types. If handlers ever need typed, event-specific fields rather than a generic payload array, migrating to a class-per-type hierarchy would be the natural next step.

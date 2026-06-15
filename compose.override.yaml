@@ -40,10 +40,10 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-###> symfony/mercure-bundle ###
-###< symfony/mercure-bundle ###
+  ###> symfony/mercure-bundle ###
+  ###< symfony/mercure-bundle ###
 
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database:
     ports:
       - "5432"
