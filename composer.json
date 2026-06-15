@@ -36,6 +36,9 @@
             "symfony/runtime": true
         },
         "bump-after-update": true,
+        "platform": {
+            "ext-xml": "1"
+        },
         "sort-packages": true
     },
     "autoload": {
@@ -61,16 +64,8 @@
         "symfony/polyfill-php84": "*"
     },
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
+        "post-install-cmd": [],
+        "post-update-cmd": []
     },
     "conflict": {
         "symfony/symfony": "*"

@@ -1,146 +1,218 @@
 {
-  "info": {
-    "name": "Order Processing API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost",
-      "type": "string"
-    }
-  ],
-  "item": [
-    {
-      "name": "Orders",
-      "item": [
+    "info": {
+        "name": "Order Processing API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
         {
-          "name": "Create order (PDF example)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/orders",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders"]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": 2,\n      \"price\": 15.50\n    },\n    {\n      \"productCode\": \"PEN-001\",\n      \"quantity\": 3,\n      \"price\": 5.00\n    }\n  ]\n}",
-              "options": { "raw": { "language": "json" } }
-            },
-            "description": "Exact request from the task PDF. Uses the fixture customer john@example.com — tests the 'reuse existing customer' rule. Expected total: 46.00."
-          }
-        },
-        {
-          "name": "Create order (new customer)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/orders",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders"]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer\": {\n    \"email\": \"new@example.com\",\n    \"name\": \"New Customer\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"MUG-001\",\n      \"quantity\": 1,\n      \"price\": 12.00\n    }\n  ]\n}",
-              "options": { "raw": { "language": "json" } }
-            },
-            "description": "Creates a brand new customer alongside the order."
-          }
-        },
-        {
-          "name": "Get order by ID (fixture order)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/orders/1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders", "1"]
-            },
-            "description": "Fetches the pre-loaded fixture order (ID 1). Returns full details with customer and items."
-          }
-        },
-        {
-          "name": "Get order by ID (not found)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/orders/999999",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders", "999999"]
-            },
-            "description": "Expects HTTP 404 with an error message."
-          }
-        },
-        {
-          "name": "Validation error — missing items",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/orders",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders"]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  }\n}",
-              "options": { "raw": { "language": "json" } }
-            },
-            "description": "Expects HTTP 422 — items field is required and must have at least one entry."
-          }
-        },
-        {
-          "name": "Validation error — invalid email",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/orders",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders"]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer\": {\n    \"email\": \"not-an-email\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": 1,\n      \"price\": 15.50\n    }\n  ]\n}",
-              "options": { "raw": { "language": "json" } }
-            },
-            "description": "Expects HTTP 422 — customer email must be a valid email address."
-          }
-        },
-        {
-          "name": "Validation error — negative quantity",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/orders",
-              "host": ["{{base_url}}"],
-              "path": ["api", "orders"]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": -1,\n      \"price\": 15.50\n    }\n  ]\n}",
-              "options": { "raw": { "language": "json" } }
-            },
-            "description": "Expects HTTP 422 — item quantity must be greater than 0."
-          }
+            "key": "base_url",
+            "value": "http://localhost",
+            "type": "string"
         }
-      ]
-    }
-  ]
+    ],
+    "item": [
+        {
+            "name": "Orders",
+            "item": [
+                {
+                    "name": "Create order (PDF example)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": 2,\n      \"price\": 15.50\n    },\n    {\n      \"productCode\": \"PEN-001\",\n      \"quantity\": 3,\n      \"price\": 5.00\n    }\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "description": "Exact request from the task PDF. Uses the fixture customer john@example.com — tests the 'reuse existing customer' rule. Expected total: 46.00."
+                    }
+                },
+                {
+                    "name": "Create order (new customer)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customer\": {\n    \"email\": \"new@example.com\",\n    \"name\": \"New Customer\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"MUG-001\",\n      \"quantity\": 1,\n      \"price\": 12.00\n    }\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "description": "Creates a brand new customer alongside the order."
+                    }
+                },
+                {
+                    "name": "Get order by ID (fixture order)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders",
+                                "1"
+                            ]
+                        },
+                        "description": "Fetches the pre-loaded fixture order (ID 1). Returns full details with customer and items."
+                    }
+                },
+                {
+                    "name": "Get order by ID (not found)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders/999999",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders",
+                                "999999"
+                            ]
+                        },
+                        "description": "Expects HTTP 404 with an error message."
+                    }
+                },
+                {
+                    "name": "Validation error — missing items",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  }\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "description": "Expects HTTP 422 — items field is required and must have at least one entry."
+                    }
+                },
+                {
+                    "name": "Validation error — invalid email",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customer\": {\n    \"email\": \"not-an-email\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": 1,\n      \"price\": 15.50\n    }\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "description": "Expects HTTP 422 — customer email must be a valid email address."
+                    }
+                },
+                {
+                    "name": "Validation error — negative quantity",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/orders",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "orders"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customer\": {\n    \"email\": \"john@example.com\",\n    \"name\": \"John Doe\"\n  },\n  \"items\": [\n    {\n      \"productCode\": \"BOOK-001\",\n      \"quantity\": -1,\n      \"price\": 15.50\n    }\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "description": "Expects HTTP 422 — item quantity must be greater than 0."
+                    }
+                }
+            ]
+        }
+    ]
 }
