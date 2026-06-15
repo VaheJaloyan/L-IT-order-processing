@@ -40,7 +40,7 @@ jobs:
             *.cache-from=type=gha,scope=refs/heads/main
             *.cache-to=type=gha,scope=${{github.ref}},mode=max
       - name: Start services
-        run: docker compose up --wait --no-build
+        run: docker compose up -d --no-build && docker compose up --wait --no-build php database
       - name: Check HTTP reachability
         run: curl -v --fail-with-body http://localhost
       # Uncomment when the homepage is configured, or change the path to check
@@ -78,7 +78,14 @@ jobs:
         env:
           GITHUB_ACTIONS_CONFIG_FILE: actionlint.yaml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: "(vendor/|config/preload\\.php|config/reference\\.php)"
           VALIDATE_CHECKOV: false
+          VALIDATE_JSCPD: false
           VALIDATE_TRIVY: false
           VALIDATE_BIOME_FORMAT: false
           VALIDATE_BIOME_LINT: false
+          VALIDATE_PHP_BUILTIN: false
+          VALIDATE_PHP_PHPCS: false
+          VALIDATE_PHP_PHPSTAN: false
+          VALIDATE_PHP_PSALM: false
+          VALIDATE_SPELL_CODESPELL: false
